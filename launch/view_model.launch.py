@@ -27,7 +27,7 @@ def generate_launch_description():
     pkg_robot_description = get_package_share_directory('cratebot_description')
 
     rviz2_config = PathJoinSubstitution(
-        [pkg_robot_viz, 'rviz', 'robot.rviz'])
+        [pkg_robot_viz, 'rviz', 'model.rviz'])
     description_launch = PathJoinSubstitution(
         [pkg_robot_description, 'launch', 'robot_description.launch.py']
     )
