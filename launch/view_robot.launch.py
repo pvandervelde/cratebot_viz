@@ -54,4 +54,4 @@ def generate_launch_description():
     ld = LaunchDescription(ARGUMENTS)
     ld.add_action(robot_description)
     ld.add_action(rviz2)
-    return
+    return ld
