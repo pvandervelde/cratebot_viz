@@ -47,7 +47,6 @@ def generate_launch_description():
         actions=[
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([description_launch]),
-                launch_arguments=[('model', LaunchConfiguration('model'))],
                 condition=IfCondition(LaunchConfiguration('description'))
             )]
     )
