@@ -14,6 +14,16 @@ ARGUMENTS = [
         default_value='false',
         description='Use simulation (Gazebo) clock if true'),
     DeclareLaunchArgument(
+        "use_fake_hardware",
+        default_value="true",
+        description="Start robot with fake hardware mirroring command to its states.",
+    ),
+    DeclareLaunchArgument(
+        "fake_sensor_commands",
+        default_value="false",
+        description="Enable fake command interfaces for sensors used for simple simulations. Used only if 'use_fake_hardware' parameter is true.",
+    ),
+    DeclareLaunchArgument(
         'description',
         default_value='false',
         description='Launch robot description'
@@ -28,8 +38,17 @@ def generate_launch_description():
 
     rviz2_config = PathJoinSubstitution(
         [pkg_robot_viz, 'rviz', 'robot.rviz'])
-    description_launch = PathJoinSubstitution(
+    robot_description_launch = PathJoinSubstitution(
         [pkg_robot_description, 'launch', 'robot_description.launch.py']
+    )
+
+    robot_description = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([robot_description_launch]),
+        launch_arguments=[
+            ('use_sim_time', LaunchConfiguration('use_sim_time')),
+            ('use_fake_hardware', LaunchConfiguration('use_fake_hardware')),
+            ('fake_sensor_commands', LaunchConfiguration('fake_sensor_commands'))
+        ]
     )
 
     rviz2 = Node(
@@ -37,19 +56,10 @@ def generate_launch_description():
         executable='rviz2',
         name='rviz2',
         arguments=['-d', rviz2_config],
-        parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}],
+        parameters=[
+            {'use_sim_time': LaunchConfiguration('use_sim_time')}
+        ],
         output='screen')
-
-    # Delay launch of robot description to allow Rviz2 to load first.
-    # Prevents visual bugs in the model.
-    robot_description = TimerAction(
-        period=3.0,
-        actions=[
-            IncludeLaunchDescription(
-                PythonLaunchDescriptionSource([description_launch]),
-                condition=IfCondition(LaunchConfiguration('description'))
-            )]
-    )
 
     ld = LaunchDescription(ARGUMENTS)
     ld.add_action(robot_description)
