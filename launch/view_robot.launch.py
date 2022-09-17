@@ -25,7 +25,7 @@ ARGUMENTS = [
     ),
     DeclareLaunchArgument(
         'description',
-        default_value='false',
+        default_value='true',
         description='Launch robot description'
     )
 ]
@@ -48,7 +48,8 @@ def generate_launch_description():
             ('use_sim_time', LaunchConfiguration('use_sim_time')),
             ('use_fake_hardware', LaunchConfiguration('use_fake_hardware')),
             ('fake_sensor_commands', LaunchConfiguration('fake_sensor_commands'))
-        ]
+        ],
+        condition=IfCondition(LaunchConfiguration('description'))
     )
 
     rviz2 = Node(
