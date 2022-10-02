@@ -33,8 +33,8 @@ ARGUMENTS = [
 
 def generate_launch_description():
 
-    pkg_robot_viz = get_package_share_directory('cratebot_viz')
-    pkg_robot_description = get_package_share_directory('cratebot_description')
+    pkg_robot_viz = get_package_share_directory('tblaze_viz')
+    pkg_robot_description = get_package_share_directory('tblaze_description')
 
     rviz2_config = PathJoinSubstitution(
         [pkg_robot_viz, 'rviz', 'robot.rviz'])
